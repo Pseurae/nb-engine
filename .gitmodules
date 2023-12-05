@@ -1,0 +1,9 @@
+[submodule "tonic/external/glm"]
+	path = tonic/external/glm
+	url = https://github.com/g-truc/glm
+[submodule "tonic/external/glfw"]
+	path = tonic/external/glfw
+	url = https://github.com/glfw/glfw
+[submodule "tonic/external/gl3w/gl3w"]
+	path = tonic/external/gl3w/gl3w
+	url = https://github.com/skaslev/gl3w/

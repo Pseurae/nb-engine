@@ -1,0 +1,19 @@
+#include "tonic/log.h"
+
+namespace tonic
+{
+void log_main(log_level level, const char *fmt, ...)
+{
+    static const char *level_strings[] = { "", "INFO", "WARN", "ERROR" };
+
+    va_list args;
+
+    if (level != log_level::LOG_LVL_MSG)
+        fprintf(stdout, "[%s] ", level_strings[(int)level]);
+
+    va_start(args, fmt);
+    vfprintf(stdout, fmt, args);
+    va_end(args);
+    fprintf(stdout, "\n");
+}
+}
