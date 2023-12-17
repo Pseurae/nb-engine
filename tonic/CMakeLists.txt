@@ -13,6 +13,7 @@ add_library(tonic STATIC
   source/core/window.cpp
 
   source/graphics/framebuffer.cpp
+  source/graphics/helpers.cpp
   source/graphics/shader.cpp
   source/graphics/texture.cpp
   source/graphics/vertex.cpp

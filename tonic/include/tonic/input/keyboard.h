@@ -1,25 +1,19 @@
 #pragma once
 
 #include <array>
+#include "tonic/input/constants.h"
 
 namespace tonic::input
 {
-enum Key : short
-{
-    TONIC_KEY_ENTER,
-    TONIC_KEY_COUNT
-};
-
 class Keyboard
 {
 public:
     static void Update();
-    static bool GetKeyDown(Key key);
-    static bool GetKeyUp(Key key);
-    static bool GetKeyHeld(Key key);
+    static bool GetKeyDown(Key key) { return m_Current[key] && !m_Last[key]; }
+    static bool GetKeyUp(Key key) { return !m_Current[key] && m_Last[key]; }
+    static bool GetKeyHeld(Key key) { return m_Current[key] && m_Last[key]; }
 
 private:
-    static int GetGLFWKey(Key key);
     static std::array<bool, TONIC_KEY_COUNT> m_Current;
     static std::array<bool, TONIC_KEY_COUNT> m_Last;
 };

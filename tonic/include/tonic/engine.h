@@ -29,7 +29,7 @@ public:
 
     void Update();
     void Render();
-    GLFWwindow *GetNativeWindow() const;
+    core::Window &GetWindow() { return m_Window; }
 private:
     App *m_App;
     bool m_IsRunning;

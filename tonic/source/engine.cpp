@@ -68,7 +68,7 @@ void Engine::Shutdown()
     glfwTerminate();
 }
 
-void Engine::Quit()
+void Engine::Quit(void)
 {
     m_IsRunning = false;
 }
@@ -86,11 +86,6 @@ void Engine::Render()
     m_Window.BeginRender();
     m_App->OnRender();
     m_Window.EndRender();
-}
-
-GLFWwindow *Engine::GetNativeWindow() const
-{
-    return m_Window.GetGLFWWindow();
 }
 
 Engine::Engine() :

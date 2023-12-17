@@ -1,6 +1,7 @@
 #include "tonic/core/window.h"
 #include "tonic/engine.h"
 #include "tonic/input/keyboard.h"
+#include "tonic/graphics/helpers.h"
 #include <glfw/glfw3.h>
 
 namespace tonic::core
@@ -34,18 +35,46 @@ bool Window::Create(const WindowProperties& props)
     if (!m_Window)
         return false;
 
+    SetAllWindowCallbacks();
     glfwSetWindowSizeLimits(m_Window, props.min_w, props.min_h, props.max_w, props.max_h);
-    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *) { 
-        tonic::Engine::Instance().Quit(); 
-    });
-    glfwSetKeyCallback(m_Window, [](GLFWwindow *, int key, int scancode, int action, int mods) { 
-        printf("%i\n", action);
-    });
 
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 
     return true;
+}
+
+static auto *GetWindowInstance(GLFWwindow *win)
+{
+    return static_cast<Window *>(glfwGetWindowUserPointer(win));
+}
+
+void Window::SetAllWindowCallbacks()
+{
+    glfwSetWindowUserPointer(m_Window, this);
+    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *win) {
+        auto window = GetWindowInstance(win);
+        if (window->m_QuitCallback)
+            window->m_QuitCallback();
+        else
+            tonic::Engine::Instance().Quit();
+    });
+    glfwSetKeyCallback(m_Window, [](GLFWwindow *win, int key, int scancode, int action, int mods) {
+        auto window = GetWindowInstance(win);
+        if (window->m_KeyCallback)
+            window->m_KeyCallback(static_cast<input::Key>(key), static_cast<input::Actions>(action), static_cast<input::Mods>(mods));
+    });
+    glfwSetCursorPosCallback(m_Window, [](GLFWwindow *win, double x, double y) {
+        auto window = GetWindowInstance(win);
+    });
+    glfwSetDropCallback(m_Window, [](GLFWwindow *win, int count, const char *paths[]) {
+        auto window = GetWindowInstance(win);
+        if (window->m_DropCallback)
+        {
+            std::vector<std::string> pathsVec(paths, paths + count);
+            window->m_DropCallback(pathsVec);
+        }
+    });
 }
 
 bool Window::HandleEvents()
@@ -73,12 +102,30 @@ void Window::Close()
 void Window::BeginRender()
 {
     auto &color = m_WindowProps.clearcolor;
-    glClearColor(color.r, color.g, color.b, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    tonic::graphics::SetClearColor(color.r, color.g, color.b, 1.0);
+    tonic::graphics::Clear();
 }
 
 void Window::EndRender()
 {
     glfwSwapBuffers(m_Window);
+}
+
+bool Window::GetKey(input::Key key)
+{
+    return glfwGetKey(m_Window, key) == GLFW_PRESS;
+}
+
+bool Window::GetMouseButton(input::MouseButton mb)
+{
+    return glfwGetMouseButton(m_Window, mb) == GLFW_PRESS;
+}
+
+glm::vec2 Window::GetMousePosition()
+{
+    double x, y;
+    glfwGetCursorPos(m_Window, &x, &y);
+
+    return { x, y };
 }
 }

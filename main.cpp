@@ -6,6 +6,8 @@
 #include <tonic/core/time.h>
 #include <tonic/input/keyboard.h>
 #include <tonic/input/mouse.h>
+#include <tonic/graphics/framebuffer.h>
+#include <tonic/graphics/helpers.h>
 #include <memory>
 
 #include <GL/gl3w.h>
@@ -38,6 +40,20 @@ uniform sampler2D myTexture;
 void main()
 {
     fragColor = texture2D(myTexture, v_uv);
+}
+)glsl";
+
+const char *fragmentShaderSource1 = R"glsl(
+#version 330 core
+
+out vec4 fragColor;
+in vec2 v_uv;
+
+uniform sampler2D myTexture;
+
+void main()
+{
+    fragColor = vec4(vec3(1.0, 0.0, 0.0) * texture2D(myTexture, v_uv).rgb, 1.0);
 }
 )glsl";
 
@@ -76,34 +92,56 @@ public:
         };
 
         m_Shader = std::make_shared<tonic::graphics::Shader>(vertexShaderSource, fragmentShaderSource);
+        m_Shader1 = std::make_shared<tonic::graphics::Shader>(vertexShaderSource, fragmentShaderSource1);
 
         m_Texture = std::make_shared<tonic::graphics::Texture>(pixels, 4, 4, 3);
         m_Texture->SetFilter(tonic::graphics::TextureFilter::Nearest, tonic::graphics::TextureFilter::Nearest);
+
+        m_FBO = std::make_shared<tonic::graphics::FrameBuffer>(800, 600);
     }
 
     virtual void OnUpdate()
     {
+        glm::vec2 pos = tonic::input::Mouse::GetPosition();
+        
+        if (tonic::input::Mouse::GetButtonDown(tonic::input::TONIC_MOUSEBUTTON_LEFT))
+            TONIC_MSG("%f %f", pos.x, pos.y);
     }
 
     virtual void OnRender()
     {
         m_Shader->Use();
+        m_VAO->Bind();
         m_EBO->Bind();
 
-        glActiveTexture(GL_TEXTURE0);
+        tonic::graphics::ActivateTexture(GL_TEXTURE0);
         m_Texture->Bind();
 
         m_Shader->SetUniform1i("myTexture", 0);
+        m_FBO->Bind();
+        tonic::graphics::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        m_FBO->Unbind();
+
+        m_Shader1->Use();
+        m_EBO->Bind();
         m_VAO->Bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        tonic::graphics::ActivateTexture(GL_TEXTURE0);
+        m_FBO->GetTexture().Bind();
+
+        m_Shader1->SetUniform1i("myTexture", 0);
+        m_Shader1->SetUniform1f("iTime", tonic::core::Time::elapsedTime);
+
+        tonic::graphics::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 private:
     std::shared_ptr<tonic::graphics::ElementBuffer> m_EBO;
     std::shared_ptr<tonic::graphics::VertexBuffer> m_VBO;
     std::shared_ptr<tonic::graphics::VertexBufferLayout> m_VBOLayout;
     std::shared_ptr<tonic::graphics::VertexArray> m_VAO;
-    std::shared_ptr<tonic::graphics::Shader> m_Shader;
+    std::shared_ptr<tonic::graphics::Shader> m_Shader, m_Shader1;
     std::shared_ptr<tonic::graphics::Texture> m_Texture;
+    std::shared_ptr<tonic::graphics::FrameBuffer> m_FBO;
 };
 
 tonic::App *tonic::CreateApplication()

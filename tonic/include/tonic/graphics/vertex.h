@@ -13,6 +13,9 @@ struct VertexBufferAttribute
     static unsigned int GetSizeOfType(unsigned int type);
 };
 
+#define NB_VERTEXBUFFER_TYPE_REGISTER(T) \
+    template<> void VertexBufferLayout::Push<T>(unsigned int count)
+
 class VertexBufferLayout
 {
 public:
@@ -21,15 +24,6 @@ public:
 
     template<typename T>
     void Push(unsigned int count) { }
-
-    template<>
-    void Push<unsigned int>(unsigned int count);
-
-    template<>
-    void Push<float>(unsigned int count);
-
-    template<>
-    void Push<unsigned char>(unsigned int count);
 
     const auto &GetAttributes() const { return m_Attributes; }
     unsigned int GetStride() const { return m_Stride; }
@@ -40,6 +34,10 @@ private:
     std::vector<VertexBufferAttribute> m_Attributes;
     unsigned int m_Stride;
 };
+
+NB_VERTEXBUFFER_TYPE_REGISTER(unsigned int);
+NB_VERTEXBUFFER_TYPE_REGISTER(float);
+NB_VERTEXBUFFER_TYPE_REGISTER(unsigned char);
 
 class VertexBuffer
 {

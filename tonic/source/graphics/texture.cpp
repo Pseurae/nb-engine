@@ -1,4 +1,5 @@
 #include "tonic/graphics/texture.h"
+#include "tonic/graphics/helpers.h"
 #include <GL/gl3w.h>
 
 namespace tonic::graphics
@@ -6,66 +7,66 @@ namespace tonic::graphics
 Texture::Texture(int width, int height, int numChannels) :
     m_Width(width), m_Height(height), m_NumChannels(numChannels)
 {
-    glGenTextures(1, &m_Texture);
+    glGenTextures(1, &m_Texture); TONIC_CHECK_GL_ERROR();
 
-    glBindTexture(GL_TEXTURE_2D, m_Texture);
+    glBindTexture(GL_TEXTURE_2D, m_Texture); TONIC_CHECK_GL_ERROR();
 
     int channel = m_NumChannels == 3 ? GL_RGB : GL_RGBA;
-    glTexImage2D(GL_TEXTURE_2D, 0, channel, width, height, 0, channel, GL_UNSIGNED_BYTE, nullptr);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0, channel, width, height, 0, channel, GL_UNSIGNED_BYTE, nullptr); TONIC_CHECK_GL_ERROR();
+    glGenerateMipmap(GL_TEXTURE_2D); TONIC_CHECK_GL_ERROR();
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0); TONIC_CHECK_GL_ERROR();
 }
 
 Texture::Texture(const unsigned char *data, int width, int height, int numChannels) :
     m_Width(width), m_Height(height), m_NumChannels(numChannels)
 {
-    glGenTextures(1, &m_Texture);
+    glGenTextures(1, &m_Texture); TONIC_CHECK_GL_ERROR();
 
-    glBindTexture(GL_TEXTURE_2D, m_Texture);
+    glBindTexture(GL_TEXTURE_2D, m_Texture); TONIC_CHECK_GL_ERROR();
 
     int channel = m_NumChannels == 3 ? GL_RGB : GL_RGBA;
-    glTexImage2D(GL_TEXTURE_2D, 0, channel, width, height, 0, channel, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0, channel, width, height, 0, channel, GL_UNSIGNED_BYTE, data); TONIC_CHECK_GL_ERROR();
+    glGenerateMipmap(GL_TEXTURE_2D); TONIC_CHECK_GL_ERROR();
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0); TONIC_CHECK_GL_ERROR();
 }
 
 Texture::~Texture()
 {
-    glDeleteTextures(1, &m_Texture);
+    glDeleteTextures(1, &m_Texture); TONIC_CHECK_GL_ERROR();
 }
 
 void Texture::Bind() const
 {
-    glBindTexture(GL_TEXTURE_2D, m_Texture);
+    glBindTexture(GL_TEXTURE_2D, m_Texture); TONIC_CHECK_GL_ERROR();
 }
 
 void Texture::Unbind() const
 {
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0); TONIC_CHECK_GL_ERROR();
 }
 
 void Texture::SetWrapping(TextureWrap x, TextureWrap y) const
 {
     Bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GetWrappingType(x));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GetWrappingType(y));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GetWrappingType(x)); TONIC_CHECK_GL_ERROR();
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GetWrappingType(y)); TONIC_CHECK_GL_ERROR();
     Unbind();
 }
 
 void Texture::SetFilter(TextureFilter min, TextureFilter mag) const
 {
     Bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GetFilterType(min));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GetFilterType(mag));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GetFilterType(min)); TONIC_CHECK_GL_ERROR();
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GetFilterType(mag)); TONIC_CHECK_GL_ERROR();
     Unbind();
 }
 
 void Texture::SetBorderColor(const glm::vec4 &color) const
 {
     Bind();
-    glTexParameterfv(GL_TEXTURE_2D,GL_TEXTURE_BORDER_COLOR, color.data.data);
+    glTexParameterfv(GL_TEXTURE_2D,GL_TEXTURE_BORDER_COLOR, color.data.data); TONIC_CHECK_GL_ERROR();
     Unbind();
 }
 

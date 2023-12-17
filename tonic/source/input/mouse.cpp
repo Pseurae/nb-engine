@@ -4,31 +4,22 @@
 
 namespace tonic::input
 {
-std::array<bool, TONIC_MOUSEBUTTON_COUNT> Mouse::m_Current;
-std::array<bool, TONIC_MOUSEBUTTON_COUNT> Mouse::m_Last;
+std::array<bool, TONIC_MOUSEBUTTON_COUNT> Mouse::m_CurrentButtons;
+std::array<bool, TONIC_MOUSEBUTTON_COUNT> Mouse::m_LastButtons;
+glm::vec2 Mouse::m_CurrentPosition;
+glm::vec2 Mouse::m_LastPosition;
 
 void Mouse::Update()
 {
-    m_Last = m_Current;
+    m_LastButtons = m_CurrentButtons;
+    auto &window = Engine::Instance().GetWindow();
 
     for (int i = 0; i < TONIC_MOUSEBUTTON_COUNT; ++i)
     {
-        m_Current[i] = glfwGetMouseButton(Engine::Instance().GetNativeWindow(), i) == GLFW_PRESS;        
+        m_CurrentButtons[i] = window.GetMouseButton(static_cast<input::MouseButton>(i));        
     }
-}
 
-bool Mouse::GetButtonUp(MouseButton button)
-{
-    return !m_Current[button] && m_Last[button];
-}
-
-bool Mouse::GetButtonDown(MouseButton button)
-{
-    return m_Current[button] && !m_Last[button];
-}
-
-bool Mouse::GetButtonHeld(MouseButton button)
-{
-    return m_Current[button] && m_Last[button];
+    m_LastPosition = m_CurrentPosition;
+    m_CurrentPosition = window.GetMousePosition();
 }
 }
