@@ -8,6 +8,7 @@
 #include <tonic/input/mouse.h>
 #include <tonic/graphics/framebuffer.h>
 #include <tonic/graphics/helpers.h>
+#include <tonic/graphics/renderapi.h>
 #include <memory>
 
 #include <GL/gl3w.h>
@@ -114,25 +115,25 @@ public:
         m_VAO->Bind();
         m_EBO->Bind();
 
-        tonic::graphics::ActivateTexture(GL_TEXTURE0);
+        tonic::graphics::RenderAPI::ActivateTexture(0);
         m_Texture->Bind();
 
         m_Shader->SetUniform1i("myTexture", 0);
         m_FBO->Bind();
-        tonic::graphics::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         m_FBO->Unbind();
 
         m_Shader1->Use();
         m_EBO->Bind();
         m_VAO->Bind();
 
-        tonic::graphics::ActivateTexture(GL_TEXTURE0);
+        tonic::graphics::RenderAPI::ActivateTexture(0);
         m_FBO->GetTexture().Bind();
 
         m_Shader1->SetUniform1i("myTexture", 0);
-        m_Shader1->SetUniform1f("iTime", tonic::core::Time::elapsedTime);
+        m_Shader1->SetUniform1f("iTime", static_cast<float>(tonic::core::Time::elapsedTime));
 
-        tonic::graphics::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 private:
     std::shared_ptr<tonic::graphics::ElementBuffer> m_EBO;

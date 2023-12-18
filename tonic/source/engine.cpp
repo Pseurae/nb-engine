@@ -2,6 +2,7 @@
 #include "tonic/core/time.h"
 #include "tonic/input/keyboard.h"
 #include "tonic/input/mouse.h"
+#include "tonic/graphics/renderapi.h"
 
 #include <GL/gl3w.h>
 #include <glfw/glfw3.h>
@@ -55,6 +56,7 @@ bool Engine::Initialize()
         return false;
 
     core::Time::Initialize();
+    graphics::RenderAPI::Initialize();
 
     m_App->OnInitialize();
 

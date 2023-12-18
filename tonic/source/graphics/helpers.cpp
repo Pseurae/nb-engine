@@ -29,24 +29,4 @@ void CheckGLError()
 
     if (hasError) TONIC_BREAK();
 }
-
-void SetClearColor(float r, float g, float b, float a)
-{
-    glClearColor(r, g, b, a); TONIC_CHECK_GL_ERROR();
-}
-
-void Clear()
-{
-    glClear(GL_COLOR_BUFFER_BIT); TONIC_CHECK_GL_ERROR();
-}
-
-void ActivateTexture(int t)
-{
-    glActiveTexture(t); TONIC_CHECK_GL_ERROR();
-}
-
-void DrawElements(int mode, int count, int type, const void *indices)
-{
-    glDrawElements(mode, count, type, indices); TONIC_CHECK_GL_ERROR();
-}
 }

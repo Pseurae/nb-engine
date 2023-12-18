@@ -2,6 +2,7 @@
 #include "tonic/engine.h"
 #include "tonic/input/keyboard.h"
 #include "tonic/graphics/helpers.h"
+#include "tonic/graphics/renderapi.h"
 #include <glfw/glfw3.h>
 
 namespace tonic::core
@@ -102,8 +103,8 @@ void Window::Close()
 void Window::BeginRender()
 {
     auto &color = m_WindowProps.clearcolor;
-    tonic::graphics::SetClearColor(color.r, color.g, color.b, 1.0);
-    tonic::graphics::Clear();
+    tonic::graphics::RenderAPI::SetClearColor(color.r, color.g, color.b, 1.0);
+    tonic::graphics::RenderAPI::Clear();
 }
 
 void Window::EndRender()
