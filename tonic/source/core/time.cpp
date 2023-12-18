@@ -7,18 +7,18 @@ double Time::deltaTime;
 double Time::elapsedTime;
 double Time::timeMult = 1.0;
 
-double Time::lastTime;
+double Time::s_LastTime;
 
 void Time::Initialize()
 {
-    lastTime = glfwGetTime();
+    s_LastTime = glfwGetTime();
 }
 
 void Time::Update()
 {
     double currentTime = glfwGetTime();
-    deltaTime = (currentTime - lastTime) * timeMult;
+    deltaTime = (currentTime - s_LastTime) * timeMult;
     elapsedTime += deltaTime;
-    lastTime = currentTime;
+    s_LastTime = currentTime;
 }
 }

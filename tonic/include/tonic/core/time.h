@@ -1,6 +1,10 @@
 #pragma once
 
-namespace tonic::core
+namespace tonic
+{
+class Engine;
+
+namespace core
 {
 struct Time
 {
@@ -8,10 +12,13 @@ struct Time
     static double elapsedTime;
     static double timeMult;
 
-    static double currentTime;
-    static double lastTime;
+private:
+    static double s_LastTime;
 
     static void Initialize();
     static void Update();
+
+    friend class Engine;
 };
+}
 }
