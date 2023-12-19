@@ -13,6 +13,8 @@ public:
     static void SetClearColor(float r, float g, float b, float a);
     static void Clear();
 
+    static void BindDefaultFramebuffer();
+    static void SetViewport(int x, int y, int w, int h);
     static void ActivateTexture(int t);
     static void DrawElements(int mode, int count, int type, const void *indices);
     static void DrawArray(int mode, int first, int count);

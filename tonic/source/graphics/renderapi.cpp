@@ -26,6 +26,16 @@ void RenderAPI::Clear()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); TONIC_CHECK_GL_ERROR();
 }
 
+void RenderAPI::BindDefaultFramebuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); TONIC_CHECK_GL_ERROR();
+}
+
+void RenderAPI::SetViewport(int x, int y, int w, int h)
+{
+    glViewport(x, y, w, h); TONIC_CHECK_GL_ERROR();
+}
+
 void RenderAPI::ActivateTexture(int t)
 {
     glActiveTexture(GL_TEXTURE0 + t); TONIC_CHECK_GL_ERROR();
@@ -52,7 +62,7 @@ void RenderAPI::PushFramebuffer(std::shared_ptr<FrameBuffer> fbo)
     SetClearColor(color.r, color.g, color.b, color.a);
     Clear();
 
-    glViewport(0, 0, size.x, size.y);
+    SetViewport(0, 0, size.x, size.y);
 }
 
 void RenderAPI::PopFramebuffer()
@@ -63,14 +73,14 @@ void RenderAPI::PopFramebuffer()
     if (m_FramebufferStack.empty())
     {
         const auto size = tonic::Engine::Instance().GetWindow().GetFramebufferSize();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, size.x, size.y);
+        BindDefaultFramebuffer();
+        SetViewport(0, 0, size.x, size.y);
     }
     else
     {
         const auto size = m_FramebufferStack.top()->GetSize();
         m_FramebufferStack.top()->Bind();
-        glViewport(0, 0, size.x, size.y);
+        SetViewport(0, 0, size.x, size.y);
     }
 }
 }
