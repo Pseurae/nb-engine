@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.8)
 project(engine)
 
 add_subdirectory(tonic)
+add_subdirectory(libnb)
 
 add_executable(engine main.cpp)
-target_link_libraries(engine PUBLIC tonic)
+target_link_libraries(engine PUBLIC tonic libnb)
 set_target_properties(engine PROPERTIES
   CXX_STANDARD 20
   CXX_STANDARD_REQUIRED ON
