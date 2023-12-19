@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/mat4x4.hpp>
 
 namespace tonic::graphics
 {
@@ -13,6 +14,7 @@ public:
     void Use() const;
     void SetUniform1i(const std::string &name, int i) const;
     void SetUniform1f(const std::string &name, float i) const;
+    void SetUniformMat4(const std::string& name, const glm::mat4& mat) const;
 private:
     unsigned int m_Program;
 };

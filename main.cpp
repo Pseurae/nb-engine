@@ -40,7 +40,7 @@ uniform sampler2D myTexture;
 
 void main()
 {
-    fragColor = texture2D(myTexture, v_uv);
+    fragColor = vec4(1.0, 0.0, 0.0, 1.0) * texture2D(myTexture, v_uv);
 }
 )glsl";
 
@@ -54,7 +54,7 @@ uniform sampler2D myTexture;
 
 void main()
 {
-    fragColor = vec4(vec3(1.0, 0.0, 0.0) * texture2D(myTexture, v_uv).rgb, 1.0);
+    fragColor = texture2D(myTexture, v_uv);
 }
 )glsl";
 
@@ -119,9 +119,9 @@ public:
         m_Texture->Bind();
 
         m_Shader->SetUniform1i("myTexture", 0);
-        m_FBO->Bind();
+        tonic::graphics::RenderAPI::PushFramebuffer(m_FBO);
         tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        m_FBO->Unbind();
+        tonic::graphics::RenderAPI::PopFramebuffer();
 
         m_Shader1->Use();
         m_EBO->Bind();

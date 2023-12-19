@@ -55,6 +55,8 @@ bool Engine::Initialize()
     if (gl3wInit() != GL3W_OK)
         return false;
 
+    m_Window.InitializeScreenRender();
+
     core::Time::Initialize();
     graphics::RenderAPI::Initialize();
 

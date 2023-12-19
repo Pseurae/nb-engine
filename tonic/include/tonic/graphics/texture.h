@@ -16,7 +16,11 @@ enum class TextureWrap
 enum class TextureFilter
 {
     Linear,
-    Nearest
+    Nearest,
+    NearestMipNearest,
+    LinearNipNearest,
+    NearestMipLinear,
+    LinearMipLinear
 };
 
 class Texture

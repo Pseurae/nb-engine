@@ -5,7 +5,7 @@
 
 namespace tonic::graphics
 {
-void CheckGLError()
+void CheckGLError(const char *file, int line)
 {
     bool hasError = false;
     GLenum error = glGetError();
@@ -22,7 +22,7 @@ void CheckGLError()
         default:								errorstr = std::to_string(error);	break;
         }
 
-        TONIC_ERROR("OpenGL Error: %s", errorstr.c_str());
+        TONIC_ERROR("OpenGL Error: %s\nFile: %s:%i", errorstr.c_str(), file, line);
         error = glGetError();
         hasError = true;
     }

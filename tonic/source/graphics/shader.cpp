@@ -3,6 +3,8 @@
 #include "tonic/log.h"
 
 #include <GL/gl3w.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace tonic::graphics
 {
@@ -75,5 +77,10 @@ void Shader::SetUniform1f(const std::string &name, float i) const
 {
     Use();
     glUniform1f(glGetUniformLocation(m_Program, name.c_str()), i); TONIC_CHECK_GL_ERROR();
+}
+void Shader::SetUniformMat4(const std::string& name, const glm::mat4& mat) const
+{
+    Use();
+    glUniformMatrix4fv(glGetUniformLocation(m_Program, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat)); TONIC_CHECK_GL_ERROR();
 }
 }

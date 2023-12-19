@@ -94,6 +94,14 @@ unsigned int Texture::GetFilterType(TextureFilter f)
     {
     case TextureFilter::Nearest:
         return GL_NEAREST;
+    case TextureFilter::NearestMipNearest:
+        return GL_NEAREST_MIPMAP_NEAREST;
+    case TextureFilter::LinearNipNearest:
+        return GL_LINEAR_MIPMAP_NEAREST;
+    case TextureFilter::NearestMipLinear:
+        return GL_NEAREST_MIPMAP_LINEAR;
+    case TextureFilter::LinearMipLinear:
+        return GL_LINEAR_MIPMAP_LINEAR;
     case TextureFilter::Linear:
     default:
         return GL_LINEAR;
