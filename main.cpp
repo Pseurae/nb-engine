@@ -145,7 +145,7 @@ private:
     std::shared_ptr<tonic::graphics::FrameBuffer> m_FBO;
 };
 
-tonic::App *tonic::CreateApplication()
+tonic::App *tonic::CreateApplication(const LaunchArguments &launchArguments)
 {
     return new MyApp();
 }
