@@ -29,7 +29,7 @@ public:
 
     void Update();
     void Render();
-    core::Window &GetWindow() { return m_Window; }
+    [[nodiscard]] core::Window &GetWindow() { return m_Window; }
 private:
     App *m_App;
     bool m_IsRunning;

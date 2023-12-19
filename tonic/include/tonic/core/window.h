@@ -32,6 +32,7 @@ struct WindowProperties final
 template<typename... Args>
 using Event = void(*)(Args...);
 
+// TODO: Add event callback setters.
 class Window final
 {
 public:
@@ -39,10 +40,10 @@ public:
     [[nodiscard]] bool GetMouseButton(input::MouseButton key) const;
     [[nodiscard]] glm::vec2 GetMousePosition() const;
 
-    inline GLFWwindow *GetNativeWindow() const { return m_Window; }
-    inline const WindowProperties GetWindowProps() const { return m_WindowProps; }
-    inline const auto &GetSize() const { return m_Size; }
-    inline const auto &GetFramebufferSize() const { return m_FramebufferSize; }
+    [[nodiscard]] inline GLFWwindow *GetNativeWindow() const { return m_Window; }
+    [[nodiscard]] inline const WindowProperties GetWindowProps() const { return m_WindowProps; }
+    [[nodiscard]] inline const auto &GetSize() const { return m_Size; }
+    [[nodiscard]] inline const auto &GetFramebufferSize() const { return m_FramebufferSize; }
 
     friend class tonic::Engine;
 

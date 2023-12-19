@@ -26,12 +26,12 @@ WindowProperties::WindowProperties()
 
 struct WindowRenderStorage final
 {
-    std::shared_ptr<graphics::FrameBuffer> sWindowFBO;
-    std::shared_ptr<graphics::VertexArray> sWindowVAO;
-    std::shared_ptr<graphics::VertexBuffer> sWindowVBO;
-    std::shared_ptr<graphics::ElementBuffer> sWindowEBO;
-    std::shared_ptr<graphics::VertexBufferLayout> sWindowVBOLayout;
-    std::shared_ptr<graphics::Shader> sWindowShader;
+    std::shared_ptr<graphics::FrameBuffer> FBO;
+    std::shared_ptr<graphics::VertexArray> VAO;
+    std::shared_ptr<graphics::VertexBuffer> VBO;
+    std::shared_ptr<graphics::ElementBuffer> EBO;
+    std::shared_ptr<graphics::VertexBufferLayout> VBOLayout;
+    std::shared_ptr<graphics::Shader> Shader;
 };
 
 static WindowRenderStorage *sRenderData;
@@ -105,31 +105,31 @@ void Window::InitializeScreenRender()
     }
     )glsl";
 
-    sRenderData->sWindowVBO = std::make_shared<tonic::graphics::VertexBuffer>((void *)vertices, (unsigned int)sizeof(vertices));
-    sRenderData->sWindowVBOLayout = std::make_shared<tonic::graphics::VertexBufferLayout>();
-    sRenderData->sWindowVBOLayout->Push<float>(2);
-    sRenderData->sWindowVBOLayout->Push<float>(2);
+    sRenderData->VBO = std::make_shared<tonic::graphics::VertexBuffer>((void *)vertices, (unsigned int)sizeof(vertices));
+    sRenderData->VBOLayout = std::make_shared<tonic::graphics::VertexBufferLayout>();
+    sRenderData->VBOLayout->Push<float>(2);
+    sRenderData->VBOLayout->Push<float>(2);
 
-    sRenderData->sWindowEBO = std::make_shared<tonic::graphics::ElementBuffer>(elements, 6);
+    sRenderData->EBO = std::make_shared<tonic::graphics::ElementBuffer>(elements, 6);
 
-    sRenderData->sWindowVAO = std::make_shared<tonic::graphics::VertexArray>();
-    sRenderData->sWindowVAO->SubmitBuffer(*sRenderData->sWindowVBO, *sRenderData->sWindowVBOLayout);
+    sRenderData->VAO = std::make_shared<tonic::graphics::VertexArray>();
+    sRenderData->VAO->SubmitBuffer(*sRenderData->VBO, *sRenderData->VBOLayout);
 
-    sRenderData->sWindowShader = std::make_shared<tonic::graphics::Shader>(vertexShaderSource, fragmentShaderSource);
-    sRenderData->sWindowFBO = std::make_shared<tonic::graphics::FrameBuffer>(m_WindowProps.size.x, m_WindowProps.size.y);
-    sRenderData->sWindowFBO->GetTexture().SetFilter(m_WindowProps.min_filter, m_WindowProps.mag_filter);
+    sRenderData->Shader = std::make_shared<tonic::graphics::Shader>(vertexShaderSource, fragmentShaderSource);
+    sRenderData->FBO = std::make_shared<tonic::graphics::FrameBuffer>(m_WindowProps.size.x, m_WindowProps.size.y);
+    sRenderData->FBO->GetTexture().SetFilter(m_WindowProps.min_filter, m_WindowProps.mag_filter);
 }
 
 void Window::RenderToScreen()
 {
-    sRenderData->sWindowShader->Use();
-    sRenderData->sWindowVAO->Bind();
-    sRenderData->sWindowEBO->Bind();
+    sRenderData->Shader->Use();
+    sRenderData->VAO->Bind();
+    sRenderData->EBO->Bind();
 
     tonic::graphics::RenderAPI::ActivateTexture(0);
-    sRenderData->sWindowFBO->GetTexture().Bind();
+    sRenderData->FBO->GetTexture().Bind();
 
-    sRenderData->sWindowShader->SetUniform1i("texture0", 0);
+    sRenderData->Shader->SetUniform1i("texture0", 0);
 
     tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
@@ -214,7 +214,7 @@ void Window::BeginRender()
 
     tonic::graphics::RenderAPI::SetClearColor(color.r, color.g, color.b, 1.0);
     tonic::graphics::RenderAPI::Clear();
-    tonic::graphics::RenderAPI::PushFramebuffer(sRenderData->sWindowFBO);
+    tonic::graphics::RenderAPI::PushFramebuffer(sRenderData->FBO);
 }
 
 void Window::EndRender()

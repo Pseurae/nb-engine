@@ -31,7 +31,7 @@ void log_main(log_level level, const char *fmt, ...);
 #define TONIC_INFO(...) ::tonic::log_main(::tonic::log_level::LOG_LVL_INFO, __VA_ARGS__)
 #define TONIC_WARN(...) ::tonic::log_main(::tonic::log_level::LOG_LVL_WARN, __VA_ARGS__)
 #define TONIC_ERROR(...) ::tonic::log_main(::tonic::log_level::LOG_LVL_ERROR, __VA_ARGS__)
-#define TONIC_ASSERT(B, msg) if (!(B)) { ::tonic::log_main(::tonic::log_level::LOG_LVL_ERROR, "ASSERT - %s\n%s\nfile: %s\nline: %i", #B, msg, __FILE__, __LINE__); TONIC_BREAK(); }
+#define TONIC_ASSERT(B, msg) if (!(B)) { ::tonic::log_main(::tonic::log_level::LOG_LVL_ERROR, "ASSERT - %s\n%s\nFile: %s:%i", #B, msg, __FILE__, __LINE__); TONIC_BREAK(); }
 #else
 #define TONIC_MSG(...) (void*)0
 #define TONIC_INFO(...) (void*)0

@@ -67,20 +67,25 @@ void Shader::Use() const
     glUseProgram(m_Program); TONIC_CHECK_GL_ERROR();
 }
 
+int Shader::GetUniformLocation(const std::string &name) const
+{
+    return glGetUniformLocation(m_Program, name.c_str());
+}
+
 void Shader::SetUniform1i(const std::string &name, int i) const
 {
     Use();
-    glUniform1i(glGetUniformLocation(m_Program, name.c_str()), i); TONIC_CHECK_GL_ERROR();
+    glUniform1i(GetUniformLocation(name.c_str()), i); TONIC_CHECK_GL_ERROR();
 }
 
 void Shader::SetUniform1f(const std::string &name, float i) const
 {
     Use();
-    glUniform1f(glGetUniformLocation(m_Program, name.c_str()), i); TONIC_CHECK_GL_ERROR();
+    glUniform1f(GetUniformLocation(name.c_str()), i); TONIC_CHECK_GL_ERROR();
 }
 void Shader::SetUniformMat4(const std::string& name, const glm::mat4& mat) const
 {
     Use();
-    glUniformMatrix4fv(glGetUniformLocation(m_Program, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat)); TONIC_CHECK_GL_ERROR();
+    glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(mat)); TONIC_CHECK_GL_ERROR();
 }
 }

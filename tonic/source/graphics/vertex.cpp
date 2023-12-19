@@ -17,7 +17,7 @@ unsigned int VertexBufferAttribute::GetSizeOfType(unsigned int type)
     case GL_UNSIGNED_INT:
     case GL_INT:
         return 4;
-    default:
+    [[unlikely]] default:
         return 0;
     }
 }

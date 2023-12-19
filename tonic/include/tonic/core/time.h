@@ -6,6 +6,7 @@ class Engine;
 
 namespace core
 {
+// TODO: Should I make this a non-static class supplied through the Engine class?
 struct Time final
 {
     static double deltaTime;

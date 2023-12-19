@@ -83,7 +83,7 @@ unsigned int Texture::GetWrappingType(TextureWrap w)
     case TextureWrap::MirroredRepeat:
         return GL_MIRRORED_REPEAT;
     case TextureWrap::Repeat:
-    default:
+    [[unlikely]] default:
         return GL_REPEAT;
     }
 }
@@ -103,7 +103,7 @@ unsigned int Texture::GetFilterType(TextureFilter f)
     case TextureFilter::LinearMipLinear:
         return GL_LINEAR_MIPMAP_LINEAR;
     case TextureFilter::Linear:
-    default:
+    [[unlikely]] default:
         return GL_LINEAR;
     }
 }

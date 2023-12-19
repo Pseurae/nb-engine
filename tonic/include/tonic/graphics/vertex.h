@@ -25,8 +25,8 @@ public:
     template<typename T>
     void Push(unsigned int count) { }
 
-    const auto &GetAttributes() const { return m_Attributes; }
-    unsigned int GetStride() const { return m_Stride; }
+    [[nodiscard]] const auto &GetAttributes() const { return m_Attributes; }
+    [[nodiscard]] unsigned int GetStride() const { return m_Stride; }
 
 private:
     void Push(unsigned int type, unsigned int count, unsigned char normalized);

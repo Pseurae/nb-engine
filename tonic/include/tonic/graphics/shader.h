@@ -12,6 +12,8 @@ public:
     ~Shader();
 
     void Use() const;
+
+    [[nodiscard]] int GetUniformLocation(const std::string &name) const;
     void SetUniform1i(const std::string &name, int i) const;
     void SetUniform1f(const std::string &name, float i) const;
     void SetUniformMat4(const std::string& name, const glm::mat4& mat) const;

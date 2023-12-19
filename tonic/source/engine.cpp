@@ -3,6 +3,7 @@
 #include "tonic/input/keyboard.h"
 #include "tonic/input/mouse.h"
 #include "tonic/graphics/renderapi.h"
+#include "tonic/log.h"
 
 #include <GL/gl3w.h>
 #include <glfw/glfw3.h>
@@ -19,6 +20,7 @@ Engine& Engine::Instance()
 
 bool Engine::Run(App *app)
 {
+    TONIC_ASSERT(m_App == nullptr, "An instance of 'App' is already running.");
     m_App = app;
 
     if (Initialize())
