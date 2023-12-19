@@ -6,7 +6,7 @@
 
 namespace tonic::graphics
 {
-class RenderAPI
+class RenderAPI final
 {
 public:
     static void Initialize();

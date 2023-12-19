@@ -17,7 +17,7 @@ class Engine;
 
 namespace tonic::core
 {
-struct WindowProperties
+struct WindowProperties final
 {
     WindowProperties();
 
@@ -32,17 +32,17 @@ struct WindowProperties
 template<typename... Args>
 using Event = void(*)(Args...);
 
-class Window
+class Window final
 {
 public:
-    bool GetKey(input::Key key);
-    bool GetMouseButton(input::MouseButton key);
-    glm::vec2 GetMousePosition();
+    [[nodiscard]] bool GetKey(input::Key key) const;
+    [[nodiscard]] bool GetMouseButton(input::MouseButton key) const;
+    [[nodiscard]] glm::vec2 GetMousePosition() const;
 
-    GLFWwindow *GetNativeWindow() const { return m_Window; }
-    const WindowProperties GetWindowProps() const { return m_WindowProps; }
-    const auto &GetSize() const { return m_Size; }
-    const auto &GetFramebufferSize() const { return m_FramebufferSize; }
+    inline GLFWwindow *GetNativeWindow() const { return m_Window; }
+    inline const WindowProperties GetWindowProps() const { return m_WindowProps; }
+    inline const auto &GetSize() const { return m_Size; }
+    inline const auto &GetFramebufferSize() const { return m_FramebufferSize; }
 
     friend class tonic::Engine;
 

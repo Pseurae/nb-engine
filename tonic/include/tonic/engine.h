@@ -17,7 +17,7 @@ public:
     virtual void OnUpdate() { }
 };
 
-class Engine
+class Engine final
 {
 public:
     static Engine &Instance();

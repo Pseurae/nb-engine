@@ -37,7 +37,7 @@ public:
     void SetFilter(TextureFilter min, TextureFilter mag) const;
     void SetBorderColor(const glm::vec4 &color) const;
 
-    inline unsigned int GetID() { return m_Texture; } 
+    inline unsigned int GetID() const { return m_Texture; } 
 private:
     static unsigned int GetWrappingType(TextureWrap w);
     static unsigned int GetFilterType(TextureFilter f);

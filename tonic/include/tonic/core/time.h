@@ -6,7 +6,7 @@ class Engine;
 
 namespace core
 {
-struct Time
+struct Time final
 {
     static double deltaTime;
     static double elapsedTime;

@@ -24,7 +24,7 @@ WindowProperties::WindowProperties()
     mag_filter = tonic::graphics::TextureFilter::Linear;
 }
 
-struct WindowRenderStorage
+struct WindowRenderStorage final
 {
     std::shared_ptr<graphics::FrameBuffer> sWindowFBO;
     std::shared_ptr<graphics::VertexArray> sWindowVAO;
@@ -225,17 +225,17 @@ void Window::EndRender()
     glfwSwapBuffers(m_Window);
 }
 
-bool Window::GetKey(input::Key key)
+bool Window::GetKey(input::Key key) const
 {
     return glfwGetKey(m_Window, key) == GLFW_PRESS;
 }
 
-bool Window::GetMouseButton(input::MouseButton mb)
+bool Window::GetMouseButton(input::MouseButton mb) const
 {
     return glfwGetMouseButton(m_Window, mb) == GLFW_PRESS;
 }
 
-glm::vec2 Window::GetMousePosition()
+glm::vec2 Window::GetMousePosition() const
 {
     double x, y;
     glfwGetCursorPos(m_Window, &x, &y);

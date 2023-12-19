@@ -12,7 +12,7 @@ public:
     FrameBuffer(int width, int height);
     ~FrameBuffer();
 
-    inline auto &GetTexture() { return m_Texture; }
+    inline auto &GetTexture() const { return m_Texture; }
 
     void Bind() const;
     void Unbind() const;
