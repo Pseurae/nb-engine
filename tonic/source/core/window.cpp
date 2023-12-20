@@ -129,7 +129,7 @@ void Window::RenderToScreen()
     tonic::graphics::RenderAPI::ActivateTexture(0);
     sRenderData->FBO->GetTexture().Bind();
 
-    sRenderData->Shader->SetUniform1i("texture0", 0);
+    sRenderData->Shader->SetUniform("texture0", 0);
 
     tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

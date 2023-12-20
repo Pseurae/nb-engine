@@ -118,7 +118,7 @@ public:
         tonic::graphics::RenderAPI::ActivateTexture(0);
         m_Texture->Bind();
 
-        m_Shader->SetUniform1i("myTexture", 0);
+        m_Shader->SetUniform("myTexture", 0);
         tonic::graphics::RenderAPI::PushFramebuffer(m_FBO);
         tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         tonic::graphics::RenderAPI::PopFramebuffer();
@@ -130,8 +130,8 @@ public:
         tonic::graphics::RenderAPI::ActivateTexture(0);
         m_FBO->GetTexture().Bind();
 
-        m_Shader1->SetUniform1i("myTexture", 0);
-        m_Shader1->SetUniform1f("iTime", static_cast<float>(tonic::core::Time::elapsedTime));
+        m_Shader1->SetUniform("myTexture", 0);
+        m_Shader1->SetUniform("iTime", static_cast<float>(tonic::core::Time::elapsedTime));
 
         tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }

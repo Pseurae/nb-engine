@@ -72,20 +72,43 @@ int Shader::GetUniformLocation(const std::string &name) const
     return glGetUniformLocation(m_Program, name.c_str());
 }
 
-void Shader::SetUniform1i(const std::string &name, int i) const
-{
-    Use();
-    glUniform1i(GetUniformLocation(name.c_str()), i); TONIC_CHECK_GL_ERROR();
-}
+#define DEFINE_PRIM(type, suf) \
+template <> void Shader::SetUniform(const std::string &name, type i) const \
+{ \
+    Use(); \
+    glUniform1##suf(GetUniformLocation(name.c_str()), i); TONIC_CHECK_GL_ERROR(); \
+} \
+template <> void Shader::SetUniform(const std::string &name, const glm::vec<1, type, glm::qualifier::defaultp> &i) const \
+{ \
+    Use(); \
+    glUniform1##suf(GetUniformLocation(name.c_str()), i.x); TONIC_CHECK_GL_ERROR(); \
+} \
+template <> void Shader::SetUniform(const std::string &name, const glm::vec<2, type, glm::qualifier::defaultp> &i) const \
+{ \
+    Use(); \
+    glUniform2##suf(GetUniformLocation(name.c_str()), i.x, i.y); TONIC_CHECK_GL_ERROR(); \
+} \
+template <> void Shader::SetUniform(const std::string &name, const glm::vec<3, type, glm::qualifier::defaultp> &i) const \
+{ \
+    Use(); \
+    glUniform3##suf(GetUniformLocation(name.c_str()), i.x, i.y, i.z); TONIC_CHECK_GL_ERROR(); \
+} \
+template <> void Shader::SetUniform(const std::string &name, const glm::vec<4, type, glm::qualifier::defaultp> &i) const \
+{ \
+    Use(); \
+    glUniform4##suf(GetUniformLocation(name.c_str()), i.x, i.y, i.z, i.w); TONIC_CHECK_GL_ERROR(); \
+} \
 
-void Shader::SetUniform1f(const std::string &name, float i) const
-{
-    Use();
-    glUniform1f(GetUniformLocation(name.c_str()), i); TONIC_CHECK_GL_ERROR();
-}
-void Shader::SetUniformMat4(const std::string& name, const glm::mat4& mat) const
-{
-    Use();
-    glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(mat)); TONIC_CHECK_GL_ERROR();
-}
+
+#define DEFINE_MAT(d) \
+template <> void Shader::SetUniform(const std::string &name, const glm::mat##d &i) const \
+{ \
+    Use(); \
+    glUniformMatrix##d##fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(i)); TONIC_CHECK_GL_ERROR();\
+} \
+
+#include "tonic/graphics/shader_uniform.inl"
+
+#undef DEFINE_PRIM
+#undef DEFINE_MAT
 }
