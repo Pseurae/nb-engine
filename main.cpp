@@ -10,6 +10,9 @@
 #include <tonic/graphics/helpers.h>
 #include <tonic/graphics/renderapi.h>
 #include <memory>
+#include <glm/matrix.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <NB/ECS/System.h>
 
 #include <GL/gl3w.h>
 
@@ -20,10 +23,13 @@ layout (location = 0) in vec2 position;
 layout (location = 1) in vec2 uv;
 
 out vec2 v_uv;
+uniform mat4 proj = mat4(1.0);
+uniform mat4 view = mat4(1.0);
+uniform mat4 model = mat4(1.0);
 
 void main()
 {
-    gl_Position = vec4(position, 0.0, 1.0);
+    gl_Position = proj * view * model * vec4(position, 0.0, 1.0);
     v_uv = uv;
 }
 )glsl";
@@ -32,15 +38,14 @@ const char *fragmentShaderSource = R"glsl(
 #version 330 core
 
 out vec4 fragColor;
-
-uniform float iTime;
 in vec2 v_uv;
 
 uniform sampler2D myTexture;
+uniform float u_alpha = 1.0;
 
 void main()
 {
-    fragColor = vec4(1.0, 0.0, 0.0, 1.0) * texture2D(myTexture, v_uv);
+    fragColor = texture2D(myTexture, v_uv) * u_alpha;
 }
 )glsl";
 
@@ -51,10 +56,11 @@ out vec4 fragColor;
 in vec2 v_uv;
 
 uniform sampler2D myTexture;
+uniform vec4 u_color;
 
 void main()
 {
-    fragColor = texture2D(myTexture, v_uv);
+    fragColor = u_color;
 }
 )glsl";
 
@@ -63,11 +69,12 @@ class MyApp : public tonic::App
 public:
     virtual void OnInitialize() 
     {
+        test();
         const float vertices[] = {
-            -1.0f, -1.0f,  0.0f, 1.0f,
-             1.0f, -1.0f,  1.0f, 1.0f,
-             1.0f,  1.0f,  1.0f, 0.0f,
-            -1.0f,  1.0f,  0.0f, 0.0f
+            -0.5f, -0.5f,  0.0f, 1.0f,
+             0.5f, -0.5f,  1.0f, 1.0f,
+             0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f,  0.0f, 0.0f
         };
 
         const unsigned int elements[] = {
@@ -118,21 +125,28 @@ public:
         tonic::graphics::RenderAPI::ActivateTexture(0);
         m_Texture->Bind();
 
+        auto proj = glm::perspective(45.0f, 800.0f / 600.0f, 0.01f, 100.0f);
+        auto view = glm::lookAt(
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            glm::vec3(0.0f, 0.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f)
+        );
+        auto model = glm::rotate(glm::mat4(1.0), glm::radians((float)tonic::core::Time::elapsedTime * 10.0f), glm::vec3(0.0, 1.0, 0.0));
+
+        m_Shader->SetUniform("proj", proj);
+        m_Shader->SetUniform("view", view);
+        m_Shader->SetUniform("model", model);
+
+        m_Shader->SetUniform("u_alpha", 1.0f);
         m_Shader->SetUniform("myTexture", 0);
-        tonic::graphics::RenderAPI::PushFramebuffer(m_FBO);
+
         tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        tonic::graphics::RenderAPI::PopFramebuffer();
 
         m_Shader1->Use();
-        m_EBO->Bind();
         m_VAO->Bind();
+        m_EBO->Bind();
 
-        tonic::graphics::RenderAPI::ActivateTexture(0);
-        m_FBO->GetTexture().Bind();
-
-        m_Shader1->SetUniform("myTexture", 0);
-        m_Shader1->SetUniform("iTime", static_cast<float>(tonic::core::Time::elapsedTime));
-
+        m_Shader1->SetUniform("u_color", glm::vec4(1.0, 1.0, 1.0, 0.8));
         tonic::graphics::RenderAPI::DrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 private:
