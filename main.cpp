@@ -69,7 +69,6 @@ class MyApp : public tonic::App
 public:
     virtual void OnInitialize() 
     {
-        test();
         const float vertices[] = {
             -0.5f, -0.5f,  0.0f, 1.0f,
              0.5f, -0.5f,  1.0f, 1.0f,

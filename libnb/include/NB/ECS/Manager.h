@@ -1,11 +1,9 @@
 #pragma once
 
-#include "NB/ECS/Component.h"
-#include "NB/ECS/Entity.h"
-#include "NB/ECS/System.h"
-
 #include "NB/ECS/internal.h"
+#include "NB/ECS/ComponentPool.h"
 
+#include <unordered_map>
 #include <memory>
 
 namespace NB::ECS

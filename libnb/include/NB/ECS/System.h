@@ -4,22 +4,9 @@
 #include <ranges>
 
 #include "NB/ECS/internal.h"
-#include "NB/ECS/Component.h"
 
 namespace NB::ECS
 {
-class Manager;
-
-class ISystem 
-{
-protected:
-    virtual void OnInitialize() = 0;
-    virtual void OnUpdate() = 0;
-    virtual void OnShutdown() = 0;
-
-    friend class Manager;
-};
-
 template<int N, typename... Ts> using NthTypeOf =
         typename std::tuple_element<N, std::tuple<Ts...>>::type;
 
@@ -66,9 +53,6 @@ protected:
     }
 };
 
-template<typename T>
-concept SystemConcept = requires(T t){ []<typename... Args>(System<Args...>&){}(t); };
-
 namespace details
 {
 struct system_id_impl
@@ -92,5 +76,3 @@ public:
 template<typename T>
 [[nodiscard]] static inline SystemID GetSystemID() { return details::system_id_impl::value<T>; }
 }
-
-void test();
