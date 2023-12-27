@@ -12,7 +12,7 @@
 #include <memory>
 #include <glm/matrix.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <NB/ECS/System.h>
+#include <NB/Traits.h>
 
 #include <GL/gl3w.h>
 
@@ -64,6 +64,8 @@ void main()
 }
 )glsl";
 
+void test();
+
 class MyApp : public tonic::App
 {
 public:
@@ -105,6 +107,8 @@ public:
         m_Texture->SetFilter(tonic::graphics::TextureFilter::Nearest, tonic::graphics::TextureFilter::Nearest);
 
         m_FBO = std::make_shared<tonic::graphics::FrameBuffer>(800, 600);
+
+        test();
     }
 
     virtual void OnUpdate()

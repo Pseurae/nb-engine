@@ -1,15 +1,12 @@
 #pragma once
 
-#include <concepts>
 #include <ranges>
 
 #include "NB/ECS/internal.h"
+#include "NB/Traits.h"
 
 namespace NB::ECS
 {
-template<int N, typename... Ts> using NthTypeOf =
-        typename std::tuple_element<N, std::tuple<Ts...>>::type;
-
 namespace details
 {
 template<ComponentConcept... Args>
@@ -39,14 +36,14 @@ protected:
             std::views::transform([](auto kv) { return kv.first; });
     }
 
-    template<std::size_t I, ComponentConcept T = NthTypeOf<I, Args...>>
+    template<std::size_t I, ComponentConcept T = typename NB::Traits::Parameters<Args...>::template Get<I>>
     T &GetComponent(EntityID e)
     {
         return GetECS().template GetComponent<T>(e);
     }
 
     template<ComponentConcept T>
-    requires((std::same_as<T, Args> || ...))
+    requires (NB::Traits::Parameters<Args...>::template Has<T>)
     T &GetComponent(EntityID e)
     {
         return GetECS().template GetComponent<T>(e);
