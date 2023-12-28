@@ -5,6 +5,8 @@
 #include <concepts>
 #include <type_traits>
 
+#include "NB/Traits.h"
+
 namespace NB::ECS
 {
 // Entity
@@ -46,6 +48,7 @@ protected:
 };
 
 template<ComponentConcept... Args>
+requires (NB::Traits::Parameters::Unique<Args...>)
 class System;
 
 template<typename T>

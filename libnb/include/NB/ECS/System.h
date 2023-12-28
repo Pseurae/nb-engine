@@ -19,6 +19,7 @@ template<ComponentConcept... Args>
 }
 
 template<ComponentConcept... Args>
+requires (NB::Traits::Parameters::Unique<Args...>)
 class System : public ISystem
 {
 public:
@@ -36,14 +37,14 @@ protected:
             std::views::transform([](auto kv) { return kv.first; });
     }
 
-    template<std::size_t I, ComponentConcept T = typename NB::Traits::Parameters<Args...>::template Get<I>>
+    template<std::size_t I, ComponentConcept T = NB::Traits::Parameters::Get<I, Args...>>
     T &GetComponent(EntityID e)
     {
         return GetECS().template GetComponent<T>(e);
     }
 
     template<ComponentConcept T>
-    requires (NB::Traits::Parameters<Args...>::template Has<T>)
+    requires (NB::Traits::Parameters::Has<T, Args...>)
     T &GetComponent(EntityID e)
     {
         return GetECS().template GetComponent<T>(e);

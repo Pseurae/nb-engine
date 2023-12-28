@@ -7,38 +7,38 @@
 
 namespace NB::Traits
 {
-// Parameter Packs
+namespace Parameters
+{
+template<typename... Args>
+inline constexpr std::size_t Size = sizeof...(Args);
+
+template<typename T, typename... Args>
+inline constexpr bool Has = (std::same_as<T, Args> || ...);
+
+template<std::size_t I, typename... Args> 
+requires (I < Size<Args...>)
+using Get = typename std::tuple_element<I, std::tuple<Args...>>::type;
+
 namespace 
 {
-template<std::size_t N, typename... Ts> 
-using index_parameter_pack_impl = typename std::tuple_element<N, std::tuple<Ts...>>::type;
+template<typename...>
+struct unique_types_impl;
 
-template <typename T, typename... Other>
-inline constexpr auto unique_type_impl = (!std::is_same_v<T, Other> && ...) && unique_type_impl<Other...>;
+template<typename T>
+struct unique_types_impl<T> : std::true_type {};
 
-template <typename T>
-inline constexpr auto unique_type_impl<T> = true;
+template<>
+struct unique_types_impl<> : std::false_type {};
+
+template<typename T, typename... Args>
+struct unique_types_impl<T, Args...> : std::false_type {};
+
+template<typename T, typename... Args>
+requires ((!std::same_as<T, Args> && ...) && unique_types_impl<Args...>::value)
+struct unique_types_impl<T, Args...> : std::true_type {};
 }
 
 template<typename... Args>
-struct Parameters
-{
-    static constexpr auto Size = sizeof...(Args);
-    static constexpr bool Empty = (Size == 0);
-    static constexpr bool Single = (Size == 1);
-
-    template<std::size_t I>
-    requires (I < Size)
-    using Get = index_parameter_pack_impl<I, Args...>;
-
-    static constexpr bool Unique = [&]{
-        if constexpr (Empty)
-            return false;
-        else
-            return unique_type_impl<Args...>;
-    }();
-
-    template<typename T>
-    static constexpr bool Has = (std::same_as<T, Args> || ...);
-};
+inline constexpr bool Unique = unique_types_impl<Args...>::value;
+}
 }

@@ -19,7 +19,7 @@ class System1 final : public NB::ECS::System<Component1>
     {
         for (auto i : GetAffectedEntities())
         {
-            auto &c = GetComponent<0>(i);
+            auto &c = GetComponent<Component1>(i);
             std::cout << "Test " << c.i << std::endl;            
         }
     }
