@@ -29,6 +29,7 @@ void Manager::UpdateAll()
 [[nodiscard]] ComponentMask &Manager::GetEntityComponentMask(EntityID e)
 {
     auto it = m_Entities.find(e);
+    TONIC_ASSERT(it != m_Entities.end(), "Entity not found.");
     return it->second;
 }
 }

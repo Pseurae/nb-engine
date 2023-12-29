@@ -1,0 +1,8 @@
+TODO: Implement World and Scene structures
+TODO: Create a serialization system
+TODO: Implement Map structures and a specialized file format
+TODO: Implement file archives and a VFS
+TODO: Integrate a scripting language
+TODO: Integrate (or create) a dialogue language
+TODO: Implement Renderer2D interface for easier primitive drawing
+TODO: Implement Sprites, animations and 2D lighting

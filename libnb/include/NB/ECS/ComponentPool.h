@@ -2,6 +2,8 @@
 
 #include "NB/ECS/internal.h"
 
+#include <tonic/log.h>
+
 #include <unordered_map>
 #include <vector>
 
@@ -32,6 +34,7 @@ public:
     void RemoveComponent(EntityID e)
     {
         auto it = m_Indices.find(e);
+        TONIC_ASSERT(it != m_Indices.end(), "Entity not found.");
         std::size_t componentIndex = it->second;
 
         if (componentIndex < m_Components.size() - 1)
@@ -57,6 +60,7 @@ public:
     [[nodiscard]] T &GetComponent(EntityID e)
     {
         auto it = m_Indices.find(e);
+        TONIC_ASSERT(it != m_Indices.end(), "Entity not found.");
         return m_Components[it->second];
     }
 

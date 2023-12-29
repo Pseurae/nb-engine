@@ -27,6 +27,7 @@ public:
     {
         auto componentTypeID = GetComponentID<T>();
         auto it = m_ComponentPools.find(componentTypeID);
+        TONIC_ASSERT(it != m_ComponentPools.end(), "ComponentPool not found.");
         return std::static_pointer_cast<ComponentPool<T>>(it->second);
     }
 
@@ -98,6 +99,7 @@ public:
     {
         auto systemId = GetSystemID<T>();
         auto it = m_SystemPool.find(systemId);
+        TONIC_ASSERT(it != m_SystemPool.end(), "System not found.");
         it->second->OnShutdown();
         m_SystemPool.erase(it);
     }
@@ -111,6 +113,7 @@ public:
     {
         auto systemId = GetSystemID<T>();
         auto it = m_SystemPool.find(systemId);
+        TONIC_ASSERT(it != m_SystemPool.end(), "System not found.");
         it->second->OnUpdate();
     }
 

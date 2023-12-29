@@ -1,0 +1,3 @@
+TODO: Support Audio playback
+TODO: Decouple and abstract away all platform-specific graphics API calls from primitives classes
+TODO: Implement a Metal renderer as soon as possible

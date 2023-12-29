@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NB/ECS/internal.h"
+#include <tonic/log.h>
 
 namespace NB::ECS
 {
@@ -25,5 +26,10 @@ public:
 }
 
 template<typename T>
-[[nodiscard]] ComponentID GetComponentID() { return details::component_id_impl::value<T>; }
+[[nodiscard]] ComponentID GetComponentID() 
+{ 
+    auto componentId = details::component_id_impl::value<T>;
+    TONIC_ASSERT(componentId != INVALID_COMPONENT_ID, "Component limit reached.");
+    return componentId;
+}
 }

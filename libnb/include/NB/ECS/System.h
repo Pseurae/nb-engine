@@ -72,5 +72,10 @@ public:
 }
 
 template<typename T>
-[[nodiscard]] static inline SystemID GetSystemID() { return details::system_id_impl::value<T>; }
+[[nodiscard]] static inline SystemID GetSystemID() 
+{ 
+    auto systemId = details::system_id_impl::value<T>;
+    TONIC_ASSERT(systemId != INVALID_COMPONENT_ID, "System limit reached.");
+    return systemId;
+}
 }
