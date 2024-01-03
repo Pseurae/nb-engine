@@ -72,7 +72,7 @@ void RenderAPI::PopFramebuffer()
 
     if (m_FramebufferStack.empty())
     {
-        const auto size = tonic::Engine::Instance().GetWindow().GetFramebufferSize();
+        const auto size = Engine::GetWindow().GetFramebufferSize();
         BindDefaultFramebuffer();
         SetViewport(0, 0, size.x, size.y);
     }

@@ -21,16 +21,24 @@ class Engine final
 {
 public:
     static Engine &Instance();
+    [[nodiscard]] static core::Window &GetWindow() { return Instance().m_Window; }
+    static void Quit();
+
+    Engine(const Engine &) = delete;
+    void operator=(const Engine &) = delete;
+
+    Engine(Engine &&) = delete;
+    void operator=(Engine &&) = delete;
 
     bool Run(App *app);
+
+private:
     bool Initialize();
     void Shutdown();
-    void Quit();
 
     void Update();
     void Render();
-    [[nodiscard]] core::Window &GetWindow() { return m_Window; }
-private:
+
     App *m_App;
     bool m_IsRunning;
     core::Window m_Window;

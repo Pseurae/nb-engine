@@ -76,7 +76,7 @@ void Engine::Shutdown()
 
 void Engine::Quit(void)
 {
-    m_IsRunning = false;
+    Instance().m_IsRunning = false;
 }
 
 void Engine::Update()

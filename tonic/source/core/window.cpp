@@ -147,7 +147,7 @@ void Window::SetAllWindowCallbacks()
         if (window->m_QuitCallback)
             window->m_QuitCallback();
         else
-            tonic::Engine::Instance().Quit();
+            tonic::Engine::Quit();
     });
     glfwSetKeyCallback(m_Window, [](GLFWwindow *win, int key, int scancode, int action, int mods) {
         auto window = GetWindowInstance(win);

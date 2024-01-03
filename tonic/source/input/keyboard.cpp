@@ -14,7 +14,7 @@ void Keyboard::Update()
 
     for (int i = 0; i < TONIC_KEY_COUNT; ++i)
     {
-        m_Current[i] = Engine::Instance().GetWindow().GetKey((Key)i);
+        m_Current[i] = Engine::GetWindow().GetKey((Key)i);
     }
 }
 }

@@ -12,7 +12,7 @@ glm::vec2 Mouse::m_LastPosition;
 void Mouse::Update()
 {
     m_LastButtons = m_CurrentButtons;
-    auto &window = Engine::Instance().GetWindow();
+    auto &window = Engine::GetWindow();
 
     for (int i = 0; i < TONIC_MOUSEBUTTON_COUNT; ++i)
     {
