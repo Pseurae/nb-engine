@@ -30,3 +30,5 @@ set_target_properties(tonic PROPERTIES
 )
 detectOS(tonic)
 detectBuildType(tonic)
+
+add_subdirectory(tests)
