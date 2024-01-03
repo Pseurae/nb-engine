@@ -13,15 +13,15 @@
 
 namespace tonic::core
 {
-WindowProperties::WindowProperties()
+WindowProperties::WindowProperties() :
+    min_size({ GLFW_DONT_CARE, GLFW_DONT_CARE }),
+    max_size({ GLFW_DONT_CARE, GLFW_DONT_CARE }),
+    title("Untitled"),
+    size({ 800, 600 }),
+    clearcolor({ 0.0f, 0.0f, 0.0f }),
+    min_filter(graphics::TextureFilter::Linear),
+    mag_filter(graphics::TextureFilter::Linear)
 {
-    title = "Untitled";
-    size = { 800, 600 };
-    min_size = { GLFW_DONT_CARE, GLFW_DONT_CARE };
-    min_size = { GLFW_DONT_CARE, GLFW_DONT_CARE };
-    clearcolor = { 0.0f, 0.0f, 0.0f };
-    min_filter = tonic::graphics::TextureFilter::Linear;
-    mag_filter = tonic::graphics::TextureFilter::Linear;
 }
 
 struct WindowRenderStorage final

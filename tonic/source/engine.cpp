@@ -44,9 +44,16 @@ bool Engine::Run(App *app)
     }
 }
 
+void error_callback(int code, const char* description)
+{
+    TONIC_ERROR("GLFW Error [%i]: %s", code, description);
+}
+
 bool Engine::Initialize()
 {
     m_IsRunning = true;
+
+    glfwSetErrorCallback(error_callback);
 
     if (glfwInit() == GLFW_FALSE)
         return false;

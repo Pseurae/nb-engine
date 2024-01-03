@@ -26,7 +26,7 @@ struct WindowProperties final
     glm::ivec2 min_size;
     glm::ivec2 max_size;
     glm::vec3 clearcolor;
-    tonic::graphics::TextureFilter min_filter, mag_filter;
+    graphics::TextureFilter min_filter, mag_filter;
 };
 
 // TODO: Add event callback setters.

@@ -12,7 +12,7 @@ void Keyboard::Update()
 {
     m_Last = m_Current;
 
-    for (int i = 0; i < TONIC_KEY_COUNT; ++i)
+    for (int i = (int)TONIC_KEY_SPACE; i < TONIC_KEY_COUNT; ++i)
     {
         m_Current[i] = Engine::GetWindow().GetKey((Key)i);
     }
